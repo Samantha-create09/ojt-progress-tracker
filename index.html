@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OJT Progress Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>OJT Progress Tracker</h1>
+
+        <h2>Daily Learning Tasks</h2>
+
+        <form id="taskForm">
+
+            <input type="text"
+                   id="title"
+                   placeholder="Enter Task Title"
+                   required>
+
+            <input type="date"
+                   id="date"
+                   required>
+
+            <select id="category" required>
+
+                <option value="">
+                    Select Category
+                </option>
+
+                <option value="Frontend">
+                    Frontend
+                </option>
+
+                <option value="Backend">
+                    Backend
+                </option>
+
+                <option value="Database">
+                    Database
+                </option>
+
+                <option value="GitHub">
+                    GitHub
+                </option>
+
+            </select>
+
+            <select id="status" required>
+
+                <option value="">
+                    Select Status
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Completed">
+                    Completed
+                </option>
+
+            </select>
+
+            <button type="submit">
+                Add Task
+            </button>
+
+        </form>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="taskList">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
