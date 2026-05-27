@@ -1,101 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OJT Progress Tracker</title>
-
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OJT Progress Tracker</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="container">
+<div class="sidebar">
 
-        <h1>OJT Progress Tracker</h1>
+<h2>OJT Tracker</h2>
 
-        <h2>Daily Learning Tasks</h2>
+<a href="index.html">Home</a>
+<a href="tasks.html">Add Tasks</a>
+<a href="analytics.html">Analytics</a>
+<a href="notes.html">Notes</a>
 
-        <form id="taskForm">
+</div>
 
-            <input type="text"
-                   id="title"
-                   placeholder="Enter Task Title"
-                   required>
+<div class="main">
 
-            <input type="date"
-                   id="date"
-                   required>
+<h1>Today's Tasks</h1>
 
-            <select id="category" required>
+<p class="quote">
+“Small progress every day leads to big success.”
+</p>
 
-                <option value="">
-                    Select Category
-                </option>
+<div class="task-grid">
 
-                <option value="Frontend">
-                    Frontend
-                </option>
+<div class="task-card high">
+<h3>Build Dashboard</h3>
+<p>Frontend</p>
+<p>9 AM - 12 PM</p>
+<span>High Priority</span>
+</div>
 
-                <option value="Backend">
-                    Backend
-                </option>
+<div class="task-card medium">
+<h3>GitHub Push</h3>
+<p>GitHub</p>
+<p>1 PM - 2 PM</p>
+<span>Medium Priority</span>
+</div>
 
-                <option value="Database">
-                    Database
-                </option>
+<div class="task-card low">
+<h3>Read Docs</h3>
+<p>Learning</p>
+<p>5 PM - 6 PM</p>
+<span>Low Priority</span>
+</div>
 
-                <option value="GitHub">
-                    GitHub
-                </option>
+</div>
 
-            </select>
-
-            <select id="status" required>
-
-                <option value="">
-                    Select Status
-                </option>
-
-                <option value="Pending">
-                    Pending
-                </option>
-
-                <option value="Completed">
-                    Completed
-                </option>
-
-            </select>
-
-            <button type="submit">
-                Add Task
-            </button>
-
-        </form>
-
-        <table>
-
-            <thead>
-
-                <tr>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-
-            </thead>
-
-            <tbody id="taskList">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <script src="script.js"></script>
+</div>
 
 </body>
 </html>
