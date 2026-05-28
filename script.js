@@ -1,6 +1,104 @@
 const taskForm = document.getElementById("taskForm");
 
-const taskList = document.getElementById("taskList");
+const taskContainer = document.getElementById("taskContainer");
+
+const notesContainer = document.getElementById("notesContainer");
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+if(taskForm){
+
+taskForm.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const task = {
+
+title: document.getElementById("title").value,
+
+category: document.getElementById("category").value,
+
+priority: document.getElementById("priority").value,
+
+startTime: document.getElementById("startTime").value,
+
+deadline: document.getElementById("deadline").value,
+
+date: document.getElementById("date").value,
+
+status: document.getElementById("status").value,
+
+notes: document.getElementById("notes").value
+
+};
+
+tasks.push(task);
+
+localStorage.setItem("tasks", JSON.stringify(tasks));
+
+alert("Task Added Successfully!");
+
+taskForm.reset();
+
+});
+
+}
+
+function displayTasks(){
+
+if(!taskContainer) return;
+
+taskContainer.innerHTML = "";
+
+tasks.forEach((task, index)=>{
+
+let priorityClass = "low";
+
+if(task.priority === "High"){
+priorityClass = "high";
+}
+
+else if(task.priority === "Medium"){
+priorityClass = "medium";
+}
+
+taskContainer.innerHTML += `
+
+<div class="task-card ${priorityClass}">
+
+<h3>${task.title}</h3>
+
+<p>📁 ${task.category}</p>
+
+<p>🕒 ${task.startTime} - ${task.deadline}</p>
+
+<p>📅 ${task.date}</p>
+
+<p>📌 ${task.status}</p>
+
+<button onclick="deleteTask(${index})">
+Delete
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+function deleteTask(index){
+
+tasks.splice(index,1);
+
+localStorage.setItem("tasks", JSON.stringify(tasks));
+
+location.reload();
+
+}
+
+function displayAnalytics(){
 
 const totalTasks = document.getElementById("totalTasks");
 
@@ -8,118 +106,59 @@ const completedTasks = document.getElementById("completedTasks");
 
 const pendingTasks = document.getElementById("pendingTasks");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const progressTasks = document.getElementById("progressTasks");
 
-displayTasks();
+if(!totalTasks) return;
 
-taskForm.addEventListener("submit", function(event){
+const completed = tasks.filter(task =>
+task.status === "Completed").length;
 
-    event.preventDefault();
+const pending = tasks.filter(task =>
+task.status === "Pending").length;
 
-    const title = document.getElementById("title").value;
+const progress = tasks.filter(task =>
+task.status === "In Progress").length;
 
-    const date = document.getElementById("date").value;
+totalTasks.textContent = tasks.length;
 
-    const category = document.getElementById("category").value;
+completedTasks.textContent = completed;
 
-    const status = document.getElementById("status").value;
+pendingTasks.textContent = pending;
 
-    const notes = document.getElementById("notes").value;
+progressTasks.textContent = progress;
 
-    const task = {
-        title,
-        date,
-        category,
-        status,
-        notes
-    };
+}
 
-    tasks.push(task);
+function displayNotes(){
 
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+if(!notesContainer) return;
 
-    displayTasks();
+notesContainer.innerHTML = "";
 
-    taskForm.reset();
+tasks.forEach(task=>{
+
+if(task.notes.trim() !== ""){
+
+notesContainer.innerHTML += `
+
+<div class="note-card">
+
+<h3>${task.title}</h3>
+
+<p>${task.notes}</p>
+
+</div>
+
+`;
+
+}
 
 });
 
-function displayTasks(){
-
-    taskList.innerHTML = "";
-
-    tasks.forEach((task, index) => {
-
-        taskList.innerHTML += `
-
-            <tr>
-
-                <td>${task.title}</td>
-
-                <td>${task.date}</td>
-
-                <td>${task.category}</td>
-
-                <td class="
-${task.status === 'Pending'
-? 'status-pending'
-: task.status === 'In Progress'
-? 'status-progress'
-: 'status-completed'}
-">
-
-${task.status}
-
-</td>
-
-                <td>${task.notes}</td>
-
-                <td>
-
-                    <button
-                    class="delete-btn"
-                    onclick="deleteTask(${index})">
-
-                    Delete
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-        `;
-
-    });
-
-    updateSummary();
-
 }
 
-function deleteTask(index){
+displayTasks();
 
-    tasks.splice(index, 1);
+displayAnalytics();
 
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    displayTasks();
-
-}
-
-function updateSummary(){
-
-    totalTasks.textContent = tasks.length;
-
-    const completed = tasks.filter(task =>
-        task.status === "Completed"
-    ).length;
-
-    const pending = tasks.filter(task =>
-        task.status === "Pending"
-    ).length;
-
-    completedTasks.textContent = completed;
-
-    pendingTasks.textContent = pending;
-
-}
+displayNotes();

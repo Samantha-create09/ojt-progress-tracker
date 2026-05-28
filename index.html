@@ -1,59 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OJT Progress Tracker</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OJT Progress Tracker</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="sidebar">
 
-<h2>OJT Tracker</h2>
+  <h2>OJT Tracker</h2>
 
-<a href="index.html">Home</a>
-<a href="tasks.html">Add Tasks</a>
-<a href="analytics.html">Analytics</a>
-<a href="notes.html">Notes</a>
+  <a href="index.html">🏠 Home</a>
+  <a href="add-task.html">➕ Add Task</a>
+  <a href="analytics.html">📊 Analytics</a>
+  <a href="notes.html">📝 Notes</a>
 
 </div>
 
 <div class="main">
 
-<h1>Today's Tasks</h1>
+  <div class="top-box">
 
-<p class="quote">
-“Small progress every day leads to big success.”
-</p>
+    <h1>Good Evening, Samantha! 👋</h1>
 
-<div class="task-grid">
+    <p>Let's make today productive and meaningful.</p>
 
-<div class="task-card high">
-<h3>Build Dashboard</h3>
-<p>Frontend</p>
-<p>9 AM - 12 PM</p>
-<span>High Priority</span>
-</div>
+  </div>
 
-<div class="task-card medium">
-<h3>GitHub Push</h3>
-<p>GitHub</p>
-<p>1 PM - 2 PM</p>
-<span>Medium Priority</span>
-</div>
+  <h2>Today's Tasks</h2>
 
-<div class="task-card low">
-<h3>Read Docs</h3>
-<p>Learning</p>
-<p>5 PM - 6 PM</p>
-<span>Low Priority</span>
-</div>
+  <div id="taskContainer" class="task-grid"></div>
 
 </div>
 
-</div>
+<script src="script.js"></script>
 
 </body>
 </html>

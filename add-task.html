@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Task</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+  <h2>OJT Tracker</h2>
+
+  <a href="index.html">🏠 Home</a>
+  <a href="add-task.html">➕ Add Task</a>
+  <a href="analytics.html">📊 Analytics</a>
+  <a href="notes.html">📝 Notes</a>
+
+</div>
+
+<div class="main">
+
+<h1>Add New Task</h1>
+
+<form id="taskForm" class="task-form">
+
+<input type="text" id="title" placeholder="Task Title" required>
+
+<select id="category" required>
+
+<option value="">Select Category</option>
+<option value="Frontend">Frontend</option>
+<option value="Backend">Backend</option>
+<option value="Database">Database</option>
+<option value="GitHub">GitHub</option>
+
+</select>
+
+<select id="priority" required>
+
+<option value="">Select Priority</option>
+<option value="High">High</option>
+<option value="Medium">Medium</option>
+<option value="Low">Low</option>
+
+</select>
+
+<input type="time" id="startTime" required>
+
+<input type="time" id="deadline" required>
+
+<input type="date" id="date" required>
+
+<select id="status" required>
+
+<option value="">Select Status</option>
+<option value="Pending">Pending</option>
+<option value="In Progress">In Progress</option>
+<option value="Completed">Completed</option>
+
+</select>
+
+<textarea
+id="notes"
+placeholder="Errors / Learnings / Mentor Feedback">
+</textarea>
+
+<button type="submit">Add Task</button>
+
+</form>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
