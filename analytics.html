@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analytics</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="sidebar">
 
-<h2>OJT Tracker</h2>
+  <h2>OJT Tracker</h2>
 
-<a href="index.html">Home</a>
-<a href="tasks.html">Add Tasks</a>
-<a href="analytics.html">Analytics</a>
-<a href="notes.html">Notes</a>
+  <a href="index.html">🏠 Home</a>
+  <a href="add-task.html">➕ Add Task</a>
+  <a href="analytics.html">📊 Analytics</a>
+  <a href="notes.html">📝 Notes</a>
 
 </div>
 
@@ -24,36 +25,41 @@
 
 <h1>Analytics Dashboard</h1>
 
-<div class="stats">
+<div class="stats-grid">
 
-<div class="stat-card">
-<h2>25</h2>
+<div class="stat-box">
+<h2 id="totalTasks">0</h2>
 <p>Total Tasks</p>
 </div>
 
-<div class="stat-card">
-<h2>18</h2>
+<div class="stat-box">
+<h2 id="completedTasks">0</h2>
 <p>Completed</p>
 </div>
 
-<div class="stat-card">
-<h2>5</h2>
+<div class="stat-box">
+<h2 id="pendingTasks">0</h2>
 <p>Pending</p>
 </div>
 
-<div class="stat-card">
-<h2>7 Days</h2>
-<p>Current Streak</p>
+<div class="stat-box">
+<h2 id="progressTasks">0</h2>
+<p>In Progress</p>
 </div>
 
 </div>
 
 <div class="goal-box">
-<h2>Weekly Goal</h2>
-<p>18 / 25 Tasks Completed</p>
+
+<h2>🔥 Current Streak: 5 Days</h2>
+
+<p>Keep learning consistently!</p>
+
 </div>
 
 </div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
