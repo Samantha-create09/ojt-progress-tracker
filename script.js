@@ -12,6 +12,27 @@ taskForm.addEventListener("submit", function(e){
 
 e.preventDefault();
 
+const selectedDate =
+document.getElementById("date").value;
+
+const todayDate =
+new Date();
+
+todayDate.setHours(0,0,0,0);
+
+const taskDate =
+new Date(selectedDate);
+
+if(taskDate < todayDate){
+
+alert(
+"You cannot add tasks for past dates."
+);
+
+return;
+
+}
+
 const task = {
 
 title: document.getElementById("title").value,
@@ -30,7 +51,14 @@ date: document.getElementById("date").value,
 
 status: "Pending",
 
-notes: document.getElementById("notes").value
+notes:
+document.getElementById("notes").value,
+
+mentorFeedback:
+document.getElementById("mentorFeedback").value,
+
+errors:
+document.getElementById("errors").value
 
 };
 
@@ -56,8 +84,25 @@ taskForm.reset();
 
 }
 
-function displayTasks(){
+function formatTime(time){
 
+    if(!time) return "--:--";
+    
+    let [hours,minutes] = time.split(":");
+    
+    hours = parseInt(hours);
+    
+    const ampm =
+    hours >= 12 ? "PM" : "AM";
+    
+    hours = hours % 12 || 12;
+    
+    return `${hours}:${minutes} ${ampm}`;
+    
+    }
+    
+    function displayTasks(){
+    
     if(!taskContainer) return;
     
     taskContainer.innerHTML = "";
@@ -69,17 +114,27 @@ function displayTasks(){
     deadlineContainer.innerHTML = "";
     }
     
-    tasks.sort((a,b)=>{
+    const todayDate = new Date();
 
-        const order = {
-        High:0,
-        Medium:1,
-        Low:2
-        };
-        
-        return order[a.priority] - order[b.priority];
-        
-        });
+const today =
+todayDate.getFullYear() +
+"-" +
+String(todayDate.getMonth()+1).padStart(2,"0") +
+"-" +
+String(todayDate.getDate()).padStart(2,"0");
+    
+    tasks.sort((a,b)=>{
+    
+    const order = {
+    High:0,
+    Medium:1,
+    Low:2
+    };
+    
+    return order[a.priority] -
+    order[b.priority];
+    
+    });
     
     tasks.forEach((task,index)=>{
     
@@ -88,12 +143,20 @@ function displayTasks(){
     if(task.priority === "High"){
     priorityClass = "high";
     }
-    
     else if(task.priority === "Medium"){
     priorityClass = "medium";
     }
     
-    const formattedDate =
+    const isToday =
+    task.date === today;
+    
+    let formattedDate;
+    
+    if(isToday){
+    formattedDate = "Today";
+    }
+    else{
+    formattedDate =
     new Date(task.date)
     .toLocaleDateString(
     'en-GB',
@@ -102,16 +165,18 @@ function displayTasks(){
     month:'short'
     }
     );
+    }
     
     let statusIcon = "🟡";
     
     if(task.status === "Completed"){
-    statusIcon = "✅";
+    statusIcon = "🟢";
     }
-    
     else if(task.status === "In Progress"){
     statusIcon = "🔵";
     }
+    
+    if(isToday){
     
     taskContainer.innerHTML += `
     
@@ -121,9 +186,9 @@ function displayTasks(){
     
     <div class="time-box">
     
-    <h3>${task.startTime}</h3>
+    <h3>${formatTime(task.startTime)}</h3>
     
-    <p>to ${task.deadline}</p>
+    <h3>${formatTime(task.deadline)}</h3>
     
     </div>
     
@@ -133,7 +198,7 @@ function displayTasks(){
     
     <p>📁 ${task.category}</p>
     
-    <p>📅 Due: ${formattedDate}</p>
+    <p>📅 ${formattedDate}</p>
     
     </div>
     
@@ -142,9 +207,6 @@ function displayTasks(){
     <div class="task-actions">
     
     <div class="status-tag">
-    
-    ${statusIcon}
-    
     <select
     class="status-select"
     onchange="updateStatus(${index},this.value)"
@@ -152,17 +214,17 @@ function displayTasks(){
     
     <option value="Pending"
     ${task.status==="Pending"?"selected":""}>
-    Pending
+    🟡 Pending
     </option>
     
     <option value="In Progress"
     ${task.status==="In Progress"?"selected":""}>
-    In Progress
+    🔵 In Progress
     </option>
     
     <option value="Completed"
     ${task.status==="Completed"?"selected":""}>
-    Completed
+    🟢 Completed
     </option>
     
     </select>
@@ -173,20 +235,14 @@ function displayTasks(){
     
     <button
     class="edit-btn"
-    onclick="editTask(${index})"
-    >
-    
+    onclick="editTask(${index})">
     Edit
-    
     </button>
     
     <button
     class="delete-btn"
-    onclick="deleteTask(${index})"
-    >
-    
+    onclick="deleteTask(${index})">
     Delete
-    
     </button>
     
     </div>
@@ -197,7 +253,18 @@ function displayTasks(){
     
     `;
     
-    if(deadlineContainer){
+    }
+    
+    const taskDate =
+new Date(task.date);
+
+const todayDate =
+new Date(today);
+
+if(
+deadlineContainer &&
+taskDate > todayDate
+){
     
     deadlineContainer.innerHTML += `
     
@@ -219,7 +286,7 @@ function displayTasks(){
     function deleteTask(index){
 
         const confirmDelete =
-        confirm("Are you sure you want to delete this task?");
+        confirm("Delete this task?");
         
         if(confirmDelete){
         
@@ -230,7 +297,9 @@ function displayTasks(){
         JSON.stringify(tasks)
         );
         
-        location.reload();
+        displayTasks();
+        displayAnalytics();
+        displayNotes();
         
         }
         
@@ -251,55 +320,82 @@ function updateStatus(index,newStatus){
     
     }
 
-    function editTask(index){
+    let editIndex = null;
 
-        const task = tasks[index];
-        
-        const newTitle =
-        prompt("Edit Title", task.title);
-        
-        const newCategory =
-        prompt("Edit Category", task.category);
-        
-        const newPriority =
-        prompt("Edit Priority", task.priority);
-        
-        const newStart =
-        prompt("Edit Start Time", task.startTime);
-        
-        const newDeadline =
-        prompt("Edit Deadline", task.deadline);
-        
-        if(
-        newTitle &&
-        newCategory &&
-        newPriority &&
-        newStart &&
-        newDeadline
-        ){
-        
-        task.title = newTitle;
-        
-        task.category = newCategory;
-        
-        task.priority = newPriority;
-        
-        task.startTime = newStart;
-        
-        task.deadline = newDeadline;
-        
-        localStorage.setItem(
-        "tasks",
-        JSON.stringify(tasks)
-        );
-        
-        displayTasks();
-        
-        displayAnalytics();
-        
-        }
-        
-        }
+    function editTask(index){
+    
+    editIndex = index;
+    
+    const task = tasks[index];
+    
+    document.getElementById("editTitle").value =
+    task.title;
+    
+    document.getElementById("editCategory").value =
+    task.category;
+    
+    document.getElementById("editPriority").value =
+    task.priority;
+    
+    document.getElementById("editStart").value =
+    task.startTime;
+    
+    document.getElementById("editEnd").value =
+    task.deadline;
+    
+    document.getElementById("editDate").value =
+    task.date;
+    
+    document.getElementById("editNotes").value =
+    task.notes;
+    
+    document.getElementById("editModal").style.display =
+    "flex";
+    
+    }
+    
+    function closeModal(){
+    
+    document.getElementById("editModal").style.display =
+    "none";
+    
+    }
+    
+    function saveEdit(){
+    
+    tasks[editIndex].title =
+    document.getElementById("editTitle").value;
+    
+    tasks[editIndex].category =
+    document.getElementById("editCategory").value;
+    
+    tasks[editIndex].priority =
+    document.getElementById("editPriority").value;
+    
+    tasks[editIndex].startTime =
+    document.getElementById("editStart").value;
+    
+    tasks[editIndex].deadline =
+    document.getElementById("editEnd").value;
+    
+    tasks[editIndex].date =
+    document.getElementById("editDate").value;
+    
+    tasks[editIndex].notes =
+    document.getElementById("editNotes").value;
+    
+    localStorage.setItem(
+    "tasks",
+    JSON.stringify(tasks)
+    );
+    
+    closeModal();
+    
+    displayTasks();
+    displayAnalytics();
+    displayNotes();
+    
+    }
 function displayAnalytics(){
 
 const totalTasks = document.getElementById("totalTasks");
@@ -333,74 +429,263 @@ progressTasks.textContent = progress;
 
 function displayNotes(){
 
-if(!notesContainer) return;
-
-notesContainer.innerHTML = "";
-
-tasks.forEach(task=>{
-
-if(task.notes.trim() !== ""){
-
-notesContainer.innerHTML += `
-
-<div class="note-card">
-
-<h3>${task.title}</h3>
-
-<p>${task.notes}</p>
-
-</div>
-
-`;
-
-}
-
-});
-
-}
-
+    const learningContainer =
+    document.getElementById("learningContainer");
+    
+    const mentorContainer =
+    document.getElementById("mentorContainer");
+    
+    const errorContainer =
+    document.getElementById("errorContainer");
+    
+    const achievementContainer =
+    document.getElementById("achievementContainer");
+    
+    const totalLearningNotes =
+    document.getElementById("totalLearningNotes");
+    
+    const mentorCount =
+    document.getElementById("mentorCount");
+    
+    if(
+    !learningContainer &&
+    !mentorContainer &&
+    !errorContainer
+    ){
+    return;
+    }
+    
+    if(learningContainer)
+    learningContainer.innerHTML = "";
+    
+    if(mentorContainer)
+    mentorContainer.innerHTML = "";
+    
+    if(errorContainer)
+    errorContainer.innerHTML = "";
+    
+    let learnings = 0;
+    let mentors = 0;
+    let errors = 0;
+    
+    tasks.forEach(task=>{
+    
+    if(!task.notes) return;
+    
+    const type =
+    task.noteType || "Learning";
+    
+    const card = `
+    
+    <div class="note-card">
+    
+    <h3>${task.title}</h3>
+    
+    <p>${task.notes}</p>
+    
+    </div>
+    
+    `;
+    
+    if(type === "Learning"){
+    
+    learnings++;
+    
+    if(learningContainer)
+    learningContainer.innerHTML += card;
+    
+    }
+    
+    if(type === "Mentor"){
+    
+    mentors++;
+    
+    if(mentorContainer)
+    mentorContainer.innerHTML += card;
+    
+    }
+    
+    if(type === "Error"){
+    
+    errors++;
+    
+    if(errorContainer)
+    errorContainer.innerHTML += card;
+    
+    }
+    
+    });
+    
+    if(totalLearningNotes){
+    
+    totalLearningNotes.textContent =
+    learnings;
+    
+    }
+    
+    if(mentorCount){
+    
+    mentorCount.textContent =
+    mentors;
+    
+    }
+    
+    if(achievementContainer){
+    
+    achievementContainer.innerHTML = "";
+    
+    if(tasks.length >= 1){
+    
+    achievementContainer.innerHTML +=
+    
+    `
+    <div class="achievement-card">
+    🚀
+    <h3>First Task Added</h3>
+    <p>Unlocked</p>
+    </div>
+    `;
+    
+    }
+    
+    if(learnings >= 1){
+    
+    achievementContainer.innerHTML +=
+    
+    `
+    <div class="achievement-card">
+    📚
+    <h3>First Learning Logged</h3>
+    <p>Unlocked</p>
+    </div>
+    `;
+    
+    }
+    
+    if(tasks.length >= 10){
+    
+    achievementContainer.innerHTML +=
+    
+    `
+    <div class="achievement-card">
+    ⭐
+    <h3>10 Tasks Completed</h3>
+    <p>Unlocked</p>
+    </div>
+    `;
+    
+    }
+    
+    }
+    
+    }
 displayTasks();
 
 displayAnalytics();
 
 displayNotes();
 
+/* ======================
+FOCUS TIMER
+====================== */
+
 let timer;
-
 let isRunning = false;
-
-let timeLeft = 1500;
 
 const timerCircle =
 document.querySelector(".timer-circle");
 
-const focusBtn =
-document.querySelector(".focus-btn");
+const startBtn =
+document.getElementById("startBtn");
+
+const pauseBtn =
+document.getElementById("pauseBtn");
+
+const resetBtn =
+document.getElementById("resetBtn");
+
+const timerMinutes =
+document.getElementById("timerMinutes");
+
+let timeLeft = 1500;
 
 function updateTimerDisplay(){
 
-let minutes =
+if(!timerCircle) return;
+
+const mins =
 Math.floor(timeLeft / 60);
 
-let seconds =
+const secs =
 timeLeft % 60;
 
-seconds =
-seconds < 10
-? "0" + seconds
-: seconds;
+timerCircle.innerHTML =
 
-timerCircle.textContent =
-`${minutes}:${seconds}`;
+`${mins}:${secs < 10 ? "0"+secs : secs}`;
 
 }
 
-if(focusBtn){
+if(startBtn){
 
-focusBtn.innerHTML =
-"▶ Start";
+startBtn.addEventListener("click",()=>{
 
-focusBtn.addEventListener("click", ()=>{
+if(isRunning) return;
+
+const selectedMinutes =
+
+parseInt(timerMinutes.value);
+
+if(
+selectedMinutes < 1 ||
+selectedMinutes > 60
+){
+
+alert(
+"Timer must be between 1 and 60 minutes."
+);
+
+return;
+
+}
+
+if(timeLeft <= 0){
+
+timeLeft =
+selectedMinutes * 60;
+
+}
+
+timer = setInterval(()=>{
+
+timeLeft--;
+
+updateTimerDisplay();
+
+if(timeLeft <= 0){
+
+clearInterval(timer);
+
+isRunning = false;
+timerMinutes.disabled = false;
+
+alert(
+"Focus Session Completed 🎉"
+);
+
+}
+
+},1000);
+
+isRunning = true;
+timerMinutes.disabled = true;
+
+});
+
+}
+
+if(pauseBtn){
+
+pauseBtn.addEventListener("click",()=>{
 
 if(!isRunning){
 
@@ -414,16 +699,7 @@ if(timeLeft <= 0){
 
 clearInterval(timer);
 
-alert("Session Complete!");
-
-timeLeft = 1500;
-
-updateTimerDisplay();
-
 isRunning = false;
-
-focusBtn.innerHTML =
-"▶ Start";
 
 }
 
@@ -431,7 +707,8 @@ focusBtn.innerHTML =
 
 isRunning = true;
 
-focusBtn.innerHTML =
+pauseBtn.innerHTML =
+
 "⏸ Pause";
 
 }
@@ -442,10 +719,48 @@ clearInterval(timer);
 
 isRunning = false;
 
-focusBtn.innerHTML =
+pauseBtn.innerHTML =
+
 "▶ Resume";
 
 }
+
+});
+
+}
+
+if(resetBtn){
+
+resetBtn.addEventListener("click",()=>{
+
+clearInterval(timer);
+
+isRunning = false;
+
+const selectedMinutes =
+
+parseInt(timerMinutes.value);
+
+timeLeft = 0;
+timerMinutes.disabled = false;
+
+pauseBtn.innerHTML =
+"⏸ Pause";
+
+updateTimerDisplay();
+
+});
+
+}
+
+if(timerMinutes){
+
+timerMinutes.addEventListener("change",()=>{
+
+timeLeft =
+parseInt(timerMinutes.value) * 60;
+
+updateTimerDisplay();
 
 });
 

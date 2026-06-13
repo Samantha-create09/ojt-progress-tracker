@@ -19,58 +19,173 @@
 
   <h2>OJT Tracker</h2>
 
-  <a href="index.html">🏠 Home</a>
+  <a href="index.html">🏠 Dashboard</a>
   <a href="add-task.html">➕ Add Task</a>
   <a href="analytics.html">📊 Analytics</a>
-  <a href="notes.html">📝 Notes</a>
+  <a href="notes.html">📝 Growth Hub</a>
 
 </div>
 
 <div class="main">
 
-<h1>Add New Task</h1>
+  <div class="planner-layout">
 
-<form id="taskForm" class="task-form">
-
-<input type="text" id="title" placeholder="Task Title" required>
-
-<select id="category" required>
-
-<option value="">Select Category</option>
-<option value="Frontend">Frontend</option>
-<option value="Backend">Backend</option>
-<option value="Database">Database</option>
-<option value="GitHub">GitHub</option>
-
-</select>
-
-<select id="priority" required>
-
-<option value="">Select Priority</option>
-<option value="High">High</option>
-<option value="Medium">Medium</option>
-<option value="Low">Low</option>
-
-</select>
-
-<input type="time" id="startTime" required>
-
-<input type="time" id="deadline" required>
-
-<input type="date" id="date" required>
+    <div>
+    
+    <h1>Add New Task</h1>
+    
+    <form id="taskForm" class="task-form">
+    
+    <input
+    type="text"
+    id="title"
+    placeholder="Task Title"
+    required>
+    
+    <select id="category" required>
+    
+    <option value="">
+    Select Category
+    </option>
+    
+    <option value="Frontend">
+    Frontend
+    </option>
+    
+    <option value="Backend">
+    Backend
+    </option>
+    
+    <option value="Database">
+    Database
+    </option>
+    
+    <option value="GitHub">
+    GitHub
+    </option>
+    
+    </select>
+    
+    <select id="priority" required>
+    
+    <option value="">
+    Select Priority
+    </option>
+    
+    <option value="High">
+    High
+    </option>
+    
+    <option value="Medium">
+    Medium
+    </option>
+    
+    <option value="Low">
+    Low
+    </option>
+    
+    </select>
+    
+    <input
+    type="time"
+    id="startTime"
+    required>
+    
+    <input
+    type="time"
+    id="deadline"
+    required>
+    
+    <input
+    type="date"
+    id="date"
+    required>
+    
+    <label>Learning / Notes</label>
 
 <textarea
 id="notes"
-placeholder="Errors / Learnings / Mentor Feedback">
+placeholder="What did you learn today?">
 </textarea>
 
-<button type="submit">Add Task</button>
+<label>Mentor Feedback</label>
 
-</form>
+<textarea
+id="mentorFeedback"
+placeholder="Feedback from mentor">
+</textarea>
+
+<label>Error / Challenge Faced</label>
+
+<textarea
+id="errors"
+placeholder="Errors, bugs or blockers">
+</textarea>
+    
+    <button type="submit">
+    Add Task
+    </button>
+    
+    </form>
+    
+    </div>
+    
+    <div class="planner-calendar">
+    
+    <div class="calendar-header">
+    
+    <button onclick="previousMonth()">
+    ◀
+    </button>
+    
+    <h2 id="monthYear">
+    May 2026
+    </h2>
+    
+    <button onclick="nextMonth()">
+    ▶
+    </button>
+    
+    </div>
+    
+    <div class="calendar-days">
+    
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+    
+    </div>
+    
+    <div
+    id="calendarGrid"
+    class="calendar-grid">
+    </div>
+    
+    <h3 class="selected-title">
+    
+    Tasks on Selected Date
+    
+    </h3>
+    
+    <div id="selectedTasks">
+    
+    Select a date
+    
+    </div>
+    
+    </div>
+    
+    </div>
+
 
 </div>
 
 <script src="script.js"></script>
+<script src="planner-calendar.js"></script>
 
 </body>
 </html>

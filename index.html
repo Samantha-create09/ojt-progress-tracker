@@ -5,114 +5,253 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>OJT Progress Tracker</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+href="style.css">
 
 </head>
 
 <body>
 
+<!-- SIDEBAR -->
+
 <div class="sidebar">
 
 <h2>OJT Tracker</h2>
 
-<a href="index.html">🏠 Home</a>
+<a href="index.html">
+🏠 Dashboard
+</a>
 
-<a href="add-task.html">➕ Add Task</a>
+<a href="add-task.html">
+➕ Add Task
+</a>
 
-<a href="analytics.html">📊 Analytics</a>
+<a href="analytics.html">
+📊 Analytics
+</a>
 
-<a href="notes.html">📝 Notes</a>
+<a href="notes.html">
+🎯 Growth Hub
+</a>
 
 </div>
 
+<!-- MAIN -->
+
 <div class="main">
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 
 <div class="hero-section">
 
 <div class="hero-text">
 
-<h1>Good Evening, Samantha! 👋</h1>
+<h1 id="greetingText">
+
+Good Evening 👋
+
+</h1>
 
 <p>
-Let's make today productive and meaningful.
+    Let's make today productive and meaningful.
 </p>
 
 </div>
 
 <div class="hero-image">
 
-<img src="girl.png" alt="Girl Illustration">
+<img
+src="girl.png"
+alt="Productivity Illustration">
 
 </div>
 
 </div>
 
-<!-- DASHBOARD GRID -->
+<!-- DASHBOARD -->
 
 <div class="dashboard-grid">
 
-<!-- TASKS SECTION -->
+<!-- LEFT SIDE -->
 
 <div class="tasks-section">
 
 <div class="section-header">
 
-<h2>Today's Priorities</h2>
-
-<span>View All</span>
+<h2>
+Today's Priorities
+</h2>
 
 </div>
 
-<div id="taskContainer" class="task-list"></div>
+<div
+id="taskContainer"
+class="task-list">
+</div>
 
 <div class="motivation-box">
 
-“You don't have to be great to start,
-but you have to start to be great.” 🚀
-
+    “You don't have to be great to start,
+    but you have to start to be great.” 🚀
+    
+    </div>
 </div>
 
-</div>
-
-<!-- RIGHT SIDEBAR -->
+<!-- RIGHT PANEL -->
 
 <div class="right-panel">
 
+<!-- DEADLINES -->
+
 <div class="deadline-box">
 
-<h3>Upcoming Deadlines</h3>
+<h3>
+Upcoming Deadlines
+</h3>
 
-<div id="deadlineContainer"></div>
+<div id="deadlineContainer">
+</div>
 
 </div>
+
+<!-- TIMER -->
 
 <div class="timer-box">
 
-<h3>Focus Timer</h3>
+<h3>
+Focus Timer
+</h3>
 
 <div class="timer-circle">
 
-25:00
+60:00
 
 </div>
 
-<button class="focus-btn">
+<input
+type="number"
+id="timerMinutes"
+min="1"
+max="60"
+value="25">
+
+<div class="timer-buttons">
+
+<button id="startBtn">
+
 ▶ Start
+
+</button>
+
+<button id="pauseBtn">
+
+⏸ Pause
+
+</button>
+
+<button id="resetBtn">
+
+🔄 Reset
+
 </button>
 
 </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- EDIT MODAL -->
+
+<div
+id="editModal"
+class="modal">
+
+<div class="modal-content">
+
+<h2>
+Edit Task
+</h2>
+
+<input
+type="text"
+id="editTitle"
+placeholder="Task Title">
+
+<input
+type="text"
+id="editCategory"
+placeholder="Category">
+
+<select id="editPriority">
+
+<option value="High">
+High
+</option>
+
+<option value="Medium">
+Medium
+</option>
+
+<option value="Low">
+Low
+</option>
+
+</select>
+
+<input
+type="time"
+id="editStart">
+
+<input
+type="time"
+id="editEnd">
+
+<input
+type="date"
+id="editDate">
+
+<textarea
+id="editNotes"
+placeholder="Notes / Learnings / Feedback">
+</textarea>
+
+<div class="modal-buttons">
+
+<button
+class="save-btn"
+onclick="saveEdit()">
+
+Save
+
+</button>
+
+<button
+class="cancel-btn"
+onclick="closeModal()">
+
+Cancel
+
+</button>
 
 </div>
 
